@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "Default Zero",
+    "slug": "default-zero",
+    "version": "1.0.0",
+    "scheme": "defaultzero",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#0B0F17",
+    "splash": {
+      "image": "./assets/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0B0F17"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.defaultzero.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0B0F17"
+      },
+      "package": "com.defaultzero.app",
+      "permissions": ["READ_SMS", "RECEIVE_SMS"]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#D4A94F",
+          "sounds": ["./assets/sounds/neigh.wav"]
+        }
+      ]
+    ]
+  }
+}
