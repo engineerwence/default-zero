@@ -66,22 +66,18 @@ export default function AuthScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-<Image
-     source={require('../assets/google-signin-button.png')}
-     style={styles.googleSignInButton}
-     resizeMode="contain"
-   />
       <Text style={styles.heading}>Welcome to Default Zero</Text>
       <Text style={styles.subheading}>Proof over performance.</Text>
 
       <Pressable style={styles.googleButton} onPress={signInWithGoogle} disabled={loading}>
         {loading ? (
-          <ActivityIndicator color={colors.background} />
+          <ActivityIndicator color={colors.textPrimary} />
         ) : (
-          <>
-            <Image source={require('../assets/google-icon.png')} style={styles.googleIcon} resizeMode="contain" />
-            <Text style={styles.googleButtonText}>Continue with Google</Text>
-          </>
+          <Image
+            source={require('../assets/google-signin-button.png')}
+            style={styles.googleSignInButton}
+            resizeMode="contain"
+          />
         )}
       </Pressable>
 
@@ -96,18 +92,12 @@ const styles = StyleSheet.create({
   heading: { color: colors.textPrimary, fontSize: 22, fontWeight: '700', textAlign: 'center', marginBottom: 4 },
   subheading: { color: colors.textSecondary, textAlign: 'center', marginBottom: spacing.xxl },
   googleButton: {
-    flexDirection: 'row',
-    backgroundColor: colors.textPrimary,
-    paddingVertical: 15,
-    borderRadius: radius.md,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  googleIcon: { width: 20, height: 20, marginRight: spacing.sm },
-  googleButtonText: { color: colors.background, fontWeight: '700', fontSize: 15 },
   note: { color: colors.textMuted, textAlign: 'center', marginTop: spacing.lg, fontSize: 12 },
   googleSignInButton: {
-     width: '100%',
-     height: 48,
-   },
+    width: '100%',
+    height: 48,
+  },
 });
