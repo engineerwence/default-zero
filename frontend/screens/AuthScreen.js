@@ -66,7 +66,11 @@ export default function AuthScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Image source={require('../assets/logo.png')} style={styles.logo} resizeMode="contain" />
+<Image
+     source={require('../assets/google-signin-button.png')}
+     style={styles.googleSignInButton}
+     resizeMode="contain"
+   />
       <Text style={styles.heading}>Welcome to Default Zero</Text>
       <Text style={styles.subheading}>Proof over performance.</Text>
 
@@ -102,4 +106,8 @@ const styles = StyleSheet.create({
   googleIcon: { width: 20, height: 20, marginRight: spacing.sm },
   googleButtonText: { color: colors.background, fontWeight: '700', fontSize: 15 },
   note: { color: colors.textMuted, textAlign: 'center', marginTop: spacing.lg, fontSize: 12 },
+  googleSignInButton: {
+     width: '100%',
+     height: 48,
+   },
 });
