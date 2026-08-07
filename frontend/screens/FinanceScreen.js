@@ -5,7 +5,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { LineChart, PieChart } from 'react-native-chart-kit';
 import { colors, spacing, radius } from '../theme/colors';
-import { API_URL, supabase } from '../lib/supabase';
+import { API_URL } from '../lib/supabase';
 import { importMpesaSms } from '../lib/smsImport';
 
 const screenWidth = Dimensions.get('window').width - spacing.lg * 2;
@@ -28,10 +28,7 @@ export default function FinanceScreen() {
   const [manualType, setManualType] = useState('expense');
   const [manualCategory, setManualCategory] = useState('');
 
-  const authHeader = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    return { Authorization: `Bearer ${session?.access_token}` };
-  };
+  const authHeader = () => ({ Authorization: 'Bearer ' });
 
   const load = useCallback(async () => {
     try {

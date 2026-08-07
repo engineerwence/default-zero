@@ -31,7 +31,7 @@ export default function OnboardingScreen({ navigation }) {
       listRef.current?.scrollToIndex({ index: index + 1 });
       setIndex(index + 1);
     } else {
-      navigation.replace('Auth');
+      navigation.replace('DayZeroRecord');
     }
   };
 
@@ -65,7 +65,7 @@ export default function OnboardingScreen({ navigation }) {
       </Pressable>
 
       {index < SLIDES.length - 1 && (
-        <Pressable onPress={() => navigation.replace('Auth')}>
+        <Pressable onPress={() => navigation.replace('DayZeroRecord')}>
           <Text style={styles.skip}>Skip</Text>
         </Pressable>
       )}

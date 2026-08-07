@@ -89,15 +89,19 @@ export default function AuthScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background, justifyContent: 'center', paddingHorizontal: spacing.xl },
   logo: { width: 84, height: 84, alignSelf: 'center', marginBottom: spacing.lg },
-  heading: { color: colors.textPrimary, fontSize: 22, fontWeight: '700', textAlign: 'center', marginBottom: 4 },
-  subheading: { color: colors.textSecondary, textAlign: 'center', marginBottom: spacing.xxl },
+  heading: { color: colors.textPrimary, fontSize: 26, fontWeight: '700', textAlign: 'center', marginBottom: 6 },
+  subheading: { color: colors.textSecondary, textAlign: 'center', marginBottom: spacing.xxl, fontSize: 16 },
   googleButton: {
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
+    maxWidth: 320,
+    alignSelf: 'center',
+    borderRadius: radius.md,
   },
   note: { color: colors.textMuted, textAlign: 'center', marginTop: spacing.lg, fontSize: 12 },
   googleSignInButton: {
     width: '100%',
-    height: 48,
+    height: 50,
   },
 });

@@ -1,5 +1,5 @@
 import { Platform, PermissionsAndroid } from 'react-native';
-import { supabase, API_URL } from './supabase';
+import { API_URL } from './supabase';
 
 // Reading a user's own SMS inbox is the real mechanism for auto-importing M-Pesa spending,
 // since Daraja has no API for that (it only sees transactions to YOUR paybill/till, not
@@ -47,14 +47,11 @@ export async function importMpesaSms() {
     );
   });
 
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) throw new Error('Not signed in.');
-
   const res = await fetch(`${API_URL}/finance/import/sms`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${session.access_token}`,
+      Authorization: 'Bearer ',
     },
     body: JSON.stringify({
       messages: messages.map((m) => ({ raw_text: m.body })),

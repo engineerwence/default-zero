@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, Pressable, Alert, ActivityIndicator
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, radius } from '../theme/colors';
 import ContainerCard from '../components/ContainerCard';
-import { API_URL, supabase } from '../lib/supabase';
+import { API_URL } from '../lib/supabase';
 
 export default function DashboardScreen({ navigation }) {
   const [containers, setContainers] = useState([]);
@@ -11,10 +11,7 @@ export default function DashboardScreen({ navigation }) {
   const [proofScore, setProofScore] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const authHeader = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    return { Authorization: `Bearer ${session?.access_token}` };
-  };
+  const authHeader = () => ({ Authorization: 'Bearer ' });
 
   const fetchAll = useCallback(async () => {
     try {
@@ -46,7 +43,7 @@ export default function DashboardScreen({ navigation }) {
       'What area of your life do you want to track?',
       async (title) => {
         if (!title?.trim()) return;
-        const headers = await authHeader();
+        const headers = authHeader();
         await fetch(`${API_URL}/containers/list`, {
           method: 'POST',
           headers: { ...headers, 'Content-Type': 'application/json' },

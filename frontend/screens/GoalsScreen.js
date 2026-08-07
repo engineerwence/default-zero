@@ -2,17 +2,14 @@ import { useEffect, useState, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable, TextInput, ActivityIndicator, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, radius } from '../theme/colors';
-import { API_URL, supabase } from '../lib/supabase';
+import { API_URL } from '../lib/supabase';
 
 export default function GoalsScreen() {
   const [goals, setGoals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState('');
 
-  const authHeader = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    return { Authorization: `Bearer ${session?.access_token}` };
-  };
+  const authHeader = () => ({ Authorization: 'Bearer ' });
 
   const load = useCallback(async () => {
     try {

@@ -4,6 +4,7 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     supabase_url: str = ""
     supabase_service_key: str = ""
+    default_user_id: str = "local-dev-user"
     jwt_secret: str = "dev-secret"
     groq_api_key: str = ""
     africastalking_api_key: str = ""

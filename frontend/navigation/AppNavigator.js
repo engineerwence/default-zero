@@ -2,7 +2,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import SplashScreen from '../screens/SplashScreen';
 import OnboardingScreen from '../screens/OnboardingScreen';
-import AuthScreen from '../screens/AuthScreen';
 import DayZeroRecordScreen from '../screens/DayZeroRecordScreen';
 import DashboardScreen from '../screens/DashboardScreen';
 import ContainerDetailScreen from '../screens/ContainerDetailScreen';
@@ -16,8 +15,8 @@ import { colors } from '../theme/colors';
 
 const Stack = createNativeStackNavigator();
 
-// Screen order reflects the real user flow:
-// Splash -> Onboarding (first run only) -> Auth -> Day Zero (mandatory, once) -> Dashboard -> everything else
+// Screen order reflects the simplified local-testing flow:
+// Splash -> Onboarding -> Day Zero -> Dashboard -> everything else
 export default function AppNavigator() {
   return (
     <Stack.Navigator
@@ -32,7 +31,6 @@ export default function AppNavigator() {
     >
       <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Auth" component={AuthScreen} options={{ headerShown: false }} />
       <Stack.Screen name="DayZeroRecord" component={DayZeroRecordScreen} options={{ title: 'Day Zero', headerBackVisible: false }} />
       <Stack.Screen name="Dashboard" component={DashboardScreen} options={{ title: 'Default Zero', headerBackVisible: false }} />
       <Stack.Screen name="ContainerDetail" component={ContainerDetailScreen} options={({ route }) => ({ title: route.params?.title ?? 'Container' })} />

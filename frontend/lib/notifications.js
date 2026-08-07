@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { Platform } from 'react-native';
-import { supabase, API_URL } from './supabase';
+import { API_URL } from './supabase';
 
 // Foreground behavior: still show the alert + play the custom sound even while the app is open,
 // so a nudge doesn't go silent just because the user already has Default Zero in front of them.
@@ -49,17 +49,14 @@ export async function registerForPushNotificationsAsync() {
 
   // Save the token against this user so the backend can send them nudges later.
   try {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (session) {
-      await fetch(`${API_URL}/notifications/register-token`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({ push_token: pushToken }),
-      });
-    }
+    await fetch(`${API_URL}/notifications/register-token`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ',
+      },
+      body: JSON.stringify({ push_token: pushToken }),
+    });
   } catch (err) {
     console.log('Failed to register push token', err);
   }

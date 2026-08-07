@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, Alert, Switch } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, radius } from '../theme/colors';
-import { supabase } from '../lib/supabase';
 import { registerForPushNotificationsAsync } from '../lib/notifications';
 
 export default function ProfileScreen({ navigation }) {
@@ -18,15 +17,14 @@ export default function ProfileScreen({ navigation }) {
     // to stop sending this user's stored push token nudges rather than just ignoring it here.
   };
 
-  const signOut = async () => {
-    await supabase.auth.signOut();
-    navigation.reset({ index: 0, routes: [{ name: 'Auth' }] });
+  const skipToDashboard = () => {
+    navigation.reset({ index: 0, routes: [{ name: 'Dashboard' }] });
   };
 
-  const confirmSignOut = () => {
-    Alert.alert('Sign out', 'Are you sure?', [
+  const confirmSkip = () => {
+    Alert.alert('Continue', 'Jump back to the dashboard?', [
       { text: 'Cancel', style: 'cancel' },
-      { text: 'Sign out', style: 'destructive', onPress: signOut },
+      { text: 'Continue', style: 'default', onPress: skipToDashboard },
     ]);
   };
 
@@ -54,9 +52,9 @@ export default function ProfileScreen({ navigation }) {
         <Text style={styles.rowLabel}>Day Zero video</Text>
       </View>
 
-      <Pressable style={styles.signOut} onPress={confirmSignOut}>
-        <Ionicons name="log-out-outline" size={18} color={colors.danger} style={{ marginRight: 6 }} />
-        <Text style={styles.signOutText}>Sign out</Text>
+      <Pressable style={styles.signOut} onPress={confirmSkip}>
+        <Ionicons name="return-up-back-outline" size={18} color={colors.gold} style={{ marginRight: 6 }} />
+        <Text style={styles.signOutText}>Back to dashboard</Text>
       </Pressable>
     </View>
   );

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Pressable } from 'react-native';
 import { colors, spacing, radius } from '../theme/colors';
-import { API_URL, supabase } from '../lib/supabase';
+import { API_URL } from '../lib/supabase';
 
 export default function ContainerDetailScreen({ route }) {
   const { key, title } = route.params;
@@ -13,11 +13,9 @@ export default function ContainerDetailScreen({ route }) {
 
   const fetchEntries = async () => {
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
       // TODO: implement GET /containers/{key}/entries on the backend
       const res = await fetch(`${API_URL}/containers/${key}/entries`, {
-        headers: { Authorization: `Bearer ${session.access_token}` },
+        headers: { Authorization: 'Bearer ' },
       });
       if (res.ok) setEntries(await res.json());
     } catch (err) {

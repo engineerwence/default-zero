@@ -40,11 +40,9 @@
         {
           "icon": "./assets/notification-icon.png",
           "color": "#D4A94F"
-          
-            
-          
         }
-      ]
+      ],
+      "expo-font"
     ],
     "extra": {
       "eas": {

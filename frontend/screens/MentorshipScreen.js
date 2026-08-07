@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ActivityIndicator, TextInput, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, radius } from '../theme/colors';
-import { API_URL, supabase } from '../lib/supabase';
+import { API_URL } from '../lib/supabase';
 
 const CONTAINERS = [
   { key: 'money', label: 'Money' },
@@ -25,10 +25,7 @@ export default function MentorshipScreen() {
     fetchMatch();
   }, []);
 
-  const authHeader = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    return { Authorization: `Bearer ${session?.access_token}` };
-  };
+  const authHeader = () => ({ Authorization: 'Bearer ' });
 
   const fetchMatch = async () => {
     try {

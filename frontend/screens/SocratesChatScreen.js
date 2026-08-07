@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet, FlatList, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, radius } from '../theme/colors';
-import { API_URL, supabase } from '../lib/supabase';
+import { API_URL } from '../lib/supabase';
 
 export default function SocratesChatScreen() {
   const [messages, setMessages] = useState([
@@ -12,10 +12,7 @@ export default function SocratesChatScreen() {
   const [sending, setSending] = useState(false);
   const listRef = useRef(null);
 
-  const authHeader = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    return { Authorization: `Bearer ${session?.access_token}` };
-  };
+  const authHeader = () => ({ Authorization: 'Bearer ' });
 
   const send = async () => {
     if (!input.trim()) return;
