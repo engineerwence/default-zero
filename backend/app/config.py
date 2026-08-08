@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     supabase_service_key: str = ""
     default_user_id: str = "local-dev-user"
     jwt_secret: str = "dev-secret"
+    allowed_origins: str = "*"
     groq_api_key: str = ""
     africastalking_api_key: str = ""
     africastalking_username: str = ""

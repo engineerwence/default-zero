@@ -24,7 +24,7 @@ export const colors = {
 
 export const typography = {
   display: { fontFamily: 'System', fontWeight: '700' }, // swap for a custom display font once you have one
-  body: { fontFamily: 'System', fontWeight: '400', fontSize: 16, lineHeight: 23 },
+  body: { fontFamily: 'System', fontWeight: '400', fontSize: 17, lineHeight: 25 },
   label: { fontFamily: 'System', fontWeight: '600', letterSpacing: 1.2, textTransform: 'uppercase' },
 };
 

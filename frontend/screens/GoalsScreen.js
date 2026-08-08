@@ -34,7 +34,7 @@ export default function GoalsScreen() {
   const addGoal = async () => {
     if (!title.trim()) return;
     try {
-      const headers = await authHeader();
+      const headers = authHeader();
       const res = await fetch(`${API_URL}/goals`, {
         method: 'POST',
         headers: { ...headers, 'Content-Type': 'application/json' },
@@ -113,10 +113,10 @@ export default function GoalsScreen() {
 }
 
 const styles = StyleSheet.create({
-  error: { color: colors.danger, fontSize: 16, lineHeight: 23, textAlign: 'center', marginBottom: spacing.md },
+  error: { color: colors.danger, fontSize: 17, lineHeight: 25, textAlign: 'center', marginBottom: spacing.md },
   container: { flex: 1, backgroundColor: colors.background },
   center: { flex: 1, backgroundColor: colors.background, alignItems: 'center', justifyContent: 'center' },
-  empty: { color: colors.textMuted, textAlign: 'center', fontSize: 16, marginTop: spacing.xl, marginBottom: spacing.xl, lineHeight: 24 },
+  empty: { color: colors.textMuted, textAlign: 'center', fontSize: 17, marginTop: spacing.xl, marginBottom: spacing.xl, lineHeight: 26 },
   goalCard: {
     backgroundColor: colors.surface, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border,
     padding: spacing.md, marginBottom: spacing.sm,

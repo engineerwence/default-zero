@@ -54,7 +54,7 @@ export default function SocratesChatScreen() {
     setSending(true);
 
     try {
-      const headers = await authHeader();
+      const headers = authHeader();
       const res = await fetch(`${API_URL}/socrates/message`, {
         method: 'POST',
         headers: { ...headers, 'Content-Type': 'application/json' },
@@ -73,7 +73,7 @@ export default function SocratesChatScreen() {
         },
       ]);
     } catch (err) {
-      setMessages((prev) => [...prev, { id: 'err', role: 'assistant', text: "Couldn't reach Socrates. Try again." }]);
+      setMessages((prev) => [...prev, { id: `err-${Date.now()}`, role: 'assistant', text: `Socrates is unavailable: ${err.message}` }]);
     } finally {
       setSending(false);
     }
@@ -81,12 +81,13 @@ export default function SocratesChatScreen() {
 
   const acceptContainerSuggestion = async (title, messageId) => {
     try {
-      const headers = await authHeader();
-      await fetch(`${API_URL}/containers/list`, {
+      const headers = authHeader();
+      const res = await fetch(`${API_URL}/containers/list`, {
         method: 'POST',
         headers: { ...headers, 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, source: 'socrates' }),
       });
+      if (!res.ok) throw new Error('The server could not add this container.');
       setMessages((prev) => prev.map((m) => (m.id === messageId ? { ...m, suggestedContainer: null, accepted: title } : m)));
       Alert.alert('Added', `"${title}" is now on your dashboard.`);
     } catch (err) {
@@ -159,13 +160,13 @@ const styles = StyleSheet.create({
   bubbleAssistant: { backgroundColor: colors.surface, alignSelf: 'flex-start', borderWidth: 1, borderColor: colors.border },
   bubbleUser: { backgroundColor: colors.gold, alignSelf: 'flex-end' },
   bubbleSafety: { backgroundColor: colors.surfaceAlt, borderColor: colors.success, borderWidth: 1 },
-  bubbleText: { color: colors.textPrimary, fontSize: 18, lineHeight: 27 },
+  bubbleText: { color: colors.textPrimary, fontSize: 19, lineHeight: 29 },
   suggestionChip: {
     flexDirection: 'row', alignSelf: 'flex-start', alignItems: 'center', borderWidth: 1, borderColor: colors.gold,
     borderRadius: radius.pill, paddingVertical: 9, paddingHorizontal: spacing.md, marginBottom: spacing.sm,
   },
-  suggestionText: { color: colors.gold, fontSize: 16, fontWeight: '600' },
-  acceptedNote: { color: colors.success, fontSize: 16, marginBottom: spacing.sm, alignSelf: 'flex-start' },
+  suggestionText: { color: colors.gold, fontSize: 17, fontWeight: '600' },
+  acceptedNote: { color: colors.success, fontSize: 17, marginBottom: spacing.sm, alignSelf: 'flex-start' },
   socratesPanel: {
     flexDirection: 'row', alignItems: 'center', margin: spacing.md, padding: spacing.md,
     backgroundColor: colors.surface, borderRadius: radius.lg, borderWidth: 1, borderColor: colors.border,
@@ -183,8 +184,8 @@ const styles = StyleSheet.create({
   browRight: { position: 'absolute', top: 20, right: 17, width: 26, height: 5, borderRadius: 2, backgroundColor: colors.background, transform: [{ rotate: '10deg' }] },
   nose: { position: 'absolute', top: 50, left: 42, width: 9, height: 12, borderRadius: 5, backgroundColor: colors.goldDim },
   socratesCopy: { flex: 1, marginLeft: spacing.md },
-  socratesName: { color: colors.gold, fontSize: 16, fontWeight: '700', letterSpacing: 2, marginBottom: 4 },
-  socratesStatus: { color: colors.textSecondary, fontSize: 17, lineHeight: 24 },
+  socratesName: { color: colors.gold, fontSize: 17, fontWeight: '700', letterSpacing: 2, marginBottom: 4 },
+  socratesStatus: { color: colors.textSecondary, fontSize: 18, lineHeight: 26 },
   thinkingDots: { width: 46, height: 46, borderRadius: 23, backgroundColor: colors.gold, alignItems: 'center', justifyContent: 'center' },
   thinkingDotsText: { color: colors.background, fontSize: 28, fontWeight: '700', marginTop: -10 },
   inputRow: { flexDirection: 'row', padding: spacing.lg, borderTopWidth: 1, borderTopColor: colors.border },
@@ -194,9 +195,9 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
     paddingHorizontal: spacing.md,
     color: colors.textPrimary,
-    fontSize: 18,
+    fontSize: 19,
     marginRight: spacing.sm,
   },
   sendButton: { justifyContent: 'center', paddingHorizontal: spacing.lg },
-  sendText: { color: colors.gold, fontWeight: '700', fontSize: 18 },
+  sendText: { color: colors.gold, fontWeight: '700', fontSize: 19 },
 });
