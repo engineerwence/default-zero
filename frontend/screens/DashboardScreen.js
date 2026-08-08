@@ -10,6 +10,7 @@ export default function DashboardScreen({ navigation }) {
   const [scores, setScores] = useState({});
   const [proofScore, setProofScore] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   const authHeader = () => ({ Authorization: 'Bearer ' });
 
@@ -20,6 +21,9 @@ export default function DashboardScreen({ navigation }) {
         fetch(`${API_URL}/containers/list`, { headers }),
         fetch(`${API_URL}/containers/summary`, { headers }),
       ]);
+      if (!listRes.ok || !summaryRes.ok) {
+        throw new Error('Dashboard data could not be loaded. Check the backend configuration.');
+      }
       if (listRes.ok) setContainers(await listRes.json());
       if (summaryRes.ok) {
         const data = await summaryRes.json();
@@ -27,6 +31,7 @@ export default function DashboardScreen({ navigation }) {
         setProofScore(data.proof_score ?? null);
       }
     } catch (err) {
+      setError(err.message);
       console.log('Dashboard fetch error', err);
     } finally {
       setLoading(false);
@@ -69,13 +74,14 @@ export default function DashboardScreen({ navigation }) {
     <ScrollView style={styles.container} contentContainerStyle={{ padding: spacing.lg }}>
       <View style={styles.scoreCard}>
         <Text style={styles.scoreLabel}>PROOF SCORE</Text>
-        <Text style={styles.scoreValue}>{proofScore ?? '—'}</Text>
+        <Text style={styles.scoreValue}>{proofScore ?? '0'}</Text>
+        {!!error && <Text style={styles.error}>{error}</Text>}
       </View>
 
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>Your containers</Text>
         <Pressable onPress={promptAddContainer}>
-          <Ionicons name="add-circle-outline" size={22} color={colors.gold} />
+          <Ionicons name="add-circle-outline" size={30} color={colors.gold} />
         </Pressable>
       </View>
 
@@ -99,21 +105,21 @@ export default function DashboardScreen({ navigation }) {
 
       <View style={styles.linksRow}>
         <Pressable style={styles.linkCard} onPress={() => navigation.navigate('Goals')}>
-          <Ionicons name="flag-outline" size={20} color={colors.gold} style={{ marginBottom: 4 }} />
+          <Ionicons name="flag-outline" size={28} color={colors.gold} style={{ marginBottom: 6 }} />
           <Text style={styles.linkText}>Goals</Text>
         </Pressable>
         <Pressable style={styles.linkCard} onPress={() => navigation.navigate('Mentorship')}>
-          <Ionicons name="people-outline" size={20} color={colors.gold} style={{ marginBottom: 4 }} />
+          <Ionicons name="people-outline" size={28} color={colors.gold} style={{ marginBottom: 6 }} />
           <Text style={styles.linkText}>Mentorship</Text>
         </Pressable>
         <Pressable style={styles.linkCard} onPress={() => navigation.navigate('SocratesChat')}>
-          <Ionicons name="chatbubble-ellipses-outline" size={20} color={colors.gold} style={{ marginBottom: 4 }} />
+          <Ionicons name="chatbubble-ellipses-outline" size={28} color={colors.gold} style={{ marginBottom: 6 }} />
           <Text style={styles.linkText}>Socrates</Text>
         </Pressable>
       </View>
 
       <Pressable style={styles.profileLink} onPress={() => navigation.navigate('Profile')}>
-        <Ionicons name="person-circle-outline" size={16} color={colors.textSecondary} style={{ marginRight: 6 }} />
+        <Ionicons name="person-circle-outline" size={22} color={colors.textSecondary} style={{ marginRight: 8 }} />
         <Text style={styles.profileLinkText}>Profile & settings</Text>
       </Pressable>
     </ScrollView>
@@ -132,10 +138,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: spacing.xl,
   },
-  scoreLabel: { color: colors.textMuted, fontSize: 11, letterSpacing: 2, marginBottom: spacing.xs },
-  scoreValue: { color: colors.gold, fontSize: 40, fontWeight: '700' },
+  scoreLabel: { color: colors.textMuted, fontSize: 13, letterSpacing: 2, marginBottom: spacing.xs },
+  scoreValue: { color: colors.gold, fontSize: 48, fontWeight: '700' },
+  error: { color: colors.danger, fontSize: 15, lineHeight: 21, textAlign: 'center', marginTop: spacing.sm },
   sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.md },
-  sectionTitle: { color: colors.textPrimary, fontSize: 16, fontWeight: '700' },
+  sectionTitle: { color: colors.textPrimary, fontSize: 18, fontWeight: '700' },
   grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
   linksRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: spacing.sm },
   linkCard: {
@@ -145,7 +152,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.md,
     alignItems: 'center',
   },
-  linkText: { color: colors.textPrimary, fontWeight: '600', fontSize: 12 },
+  linkText: { color: colors.textPrimary, fontWeight: '600', fontSize: 14 },
   profileLink: { marginTop: spacing.xl, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
   profileLinkText: { color: colors.textSecondary },
 });

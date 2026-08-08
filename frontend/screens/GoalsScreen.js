@@ -6,6 +6,7 @@ import { API_URL } from '../lib/supabase';
 
 export default function GoalsScreen() {
   const [goals, setGoals] = useState([]);
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState('');
 
@@ -13,10 +14,13 @@ export default function GoalsScreen() {
 
   const load = useCallback(async () => {
     try {
-      const headers = await authHeader();
+      const headers = authHeader();
       const res = await fetch(`${API_URL}/goals`, { headers });
-      if (res.ok) setGoals(await res.json());
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail ?? 'Goals could not be loaded.');
+      setGoals(data);
     } catch (err) {
+      setError(err.message);
       console.log('Goals load error', err);
     } finally {
       setLoading(false);
@@ -31,12 +35,15 @@ export default function GoalsScreen() {
     if (!title.trim()) return;
     try {
       const headers = await authHeader();
-      await fetch(`${API_URL}/goals`, {
+      const res = await fetch(`${API_URL}/goals`, {
         method: 'POST',
         headers: { ...headers, 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: title.trim() }),
       });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail ?? 'Goal could not be added.');
       setTitle('');
+      setError('');
       load();
     } catch (err) {
       Alert.alert('Failed to add goal', err.message);
@@ -47,11 +54,13 @@ export default function GoalsScreen() {
     const next = Math.min(goal.progress_percent + 10, 100);
     try {
       const headers = await authHeader();
-      await fetch(`${API_URL}/goals/${goal.id}`, {
+      const res = await fetch(`${API_URL}/goals/${goal.id}`, {
         method: 'PATCH',
         headers: { ...headers, 'Content-Type': 'application/json' },
         body: JSON.stringify({ progress_percent: next, status: next === 100 ? 'completed' : 'active' }),
       });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail ?? 'Goal progress could not be updated.');
       load();
     } catch (err) {
       Alert.alert('Failed to update', err.message);
@@ -68,6 +77,7 @@ export default function GoalsScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ padding: spacing.lg }}>
+      {!!error && <Text style={styles.error}>{error}</Text>}
       {goals.length === 0 ? (
         <Text style={styles.empty}>No goals yet. Discipline needs something to point at — add one below.</Text>
       ) : (
@@ -75,7 +85,7 @@ export default function GoalsScreen() {
           <Pressable key={g.id} style={styles.goalCard} onPress={() => nudgeProgress(g)}>
             <View style={styles.goalHeader}>
               <Text style={styles.goalTitle}>{g.title}</Text>
-              {g.status === 'completed' && <Ionicons name="checkmark-circle" size={18} color={colors.success} />}
+              {g.status === 'completed' && <Ionicons name="checkmark-circle" size={24} color={colors.success} />}
             </View>
             <View style={styles.progressTrack}>
               <View style={[styles.progressFill, { width: `${g.progress_percent}%` }]} />
@@ -103,23 +113,24 @@ export default function GoalsScreen() {
 }
 
 const styles = StyleSheet.create({
+  error: { color: colors.danger, fontSize: 16, lineHeight: 23, textAlign: 'center', marginBottom: spacing.md },
   container: { flex: 1, backgroundColor: colors.background },
   center: { flex: 1, backgroundColor: colors.background, alignItems: 'center', justifyContent: 'center' },
-  empty: { color: colors.textMuted, textAlign: 'center', marginTop: spacing.xl, marginBottom: spacing.xl, lineHeight: 20 },
+  empty: { color: colors.textMuted, textAlign: 'center', fontSize: 16, marginTop: spacing.xl, marginBottom: spacing.xl, lineHeight: 24 },
   goalCard: {
     backgroundColor: colors.surface, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border,
     padding: spacing.md, marginBottom: spacing.sm,
   },
   goalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.sm },
-  goalTitle: { color: colors.textPrimary, fontWeight: '600', flex: 1 },
+  goalTitle: { color: colors.textPrimary, fontWeight: '600', fontSize: 17, flex: 1 },
   progressTrack: { height: 8, backgroundColor: colors.surfaceAlt, borderRadius: radius.pill, overflow: 'hidden' },
   progressFill: { height: '100%', backgroundColor: colors.gold },
-  goalSub: { color: colors.textMuted, fontSize: 11, marginTop: spacing.xs },
+  goalSub: { color: colors.textMuted, fontSize: 14, marginTop: spacing.xs },
   form: { marginTop: spacing.lg },
   input: {
     backgroundColor: colors.surfaceAlt, borderWidth: 1, borderColor: colors.border, borderRadius: radius.sm,
-    paddingHorizontal: spacing.md, paddingVertical: 12, color: colors.textPrimary, marginBottom: spacing.sm,
+    paddingHorizontal: spacing.md, paddingVertical: 15, color: colors.textPrimary, fontSize: 17, marginBottom: spacing.sm,
   },
   addButton: { backgroundColor: colors.gold, paddingVertical: 14, borderRadius: radius.md, alignItems: 'center' },
-  addButtonText: { color: colors.background, fontWeight: '700' },
+  addButtonText: { color: colors.background, fontWeight: '700', fontSize: 17 },
 });

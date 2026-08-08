@@ -32,12 +32,12 @@ export default function ProfileScreen({ navigation }) {
     <View style={styles.container}>
       {/* TODO: show real user info pulled from Supabase profile row */}
       <View style={styles.row}>
-        <Ionicons name="person-outline" size={20} color={colors.gold} style={styles.rowIcon} />
+        <Ionicons name="person-outline" size={26} color={colors.gold} style={styles.rowIcon} />
         <Text style={styles.rowLabel}>Account</Text>
       </View>
 
       <View style={styles.row}>
-        <Ionicons name="notifications-outline" size={20} color={colors.gold} style={styles.rowIcon} />
+        <Ionicons name="notifications-outline" size={26} color={colors.gold} style={styles.rowIcon} />
         <Text style={[styles.rowLabel, { flex: 1 }]}>Notifications</Text>
         <Switch
           value={notificationsOn}
@@ -48,7 +48,7 @@ export default function ProfileScreen({ navigation }) {
       </View>
 
       <View style={styles.row}>
-        <Ionicons name="videocam-outline" size={20} color={colors.gold} style={styles.rowIcon} />
+        <Ionicons name="videocam-outline" size={26} color={colors.gold} style={styles.rowIcon} />
         <Text style={styles.rowLabel}>Day Zero video</Text>
       </View>
 

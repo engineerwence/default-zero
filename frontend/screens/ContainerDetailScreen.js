@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   entryTitle: { color: colors.textPrimary, fontWeight: '600' },
-  entryDate: { color: colors.textMuted, fontSize: 12, marginTop: 4 },
+  entryDate: { color: colors.textMuted, fontSize: 14, marginTop: 4 },
   fab: {
     position: 'absolute',
     bottom: spacing.xl,

@@ -183,7 +183,7 @@ export default function FinanceScreen() {
           <ActivityIndicator color={colors.background} />
         ) : (
           <>
-            <Ionicons name="download-outline" size={18} color={colors.background} style={{ marginRight: 6 }} />
+            <Ionicons name="download-outline" size={24} color={colors.background} style={{ marginRight: 8 }} />
             <Text style={styles.importButtonText}>
               {Platform.OS === 'android' ? 'Import from M-Pesa SMS' : 'Not available on iOS'}
             </Text>
@@ -246,9 +246,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
     alignItems: 'center',
   },
-  statLabel: { color: colors.textMuted, fontSize: 9, letterSpacing: 1, marginBottom: 4 },
-  statValue: { color: colors.gold, fontWeight: '700', fontSize: 16 },
-  sectionTitle: { color: colors.textPrimary, fontWeight: '700', fontSize: 15, marginTop: spacing.md, marginBottom: spacing.sm },
+  statLabel: { color: colors.textMuted, fontSize: 12, letterSpacing: 1, marginBottom: 4 },
+  statValue: { color: colors.gold, fontWeight: '700', fontSize: 18 },
+  sectionTitle: { color: colors.textPrimary, fontWeight: '700', fontSize: 17, marginTop: spacing.md, marginBottom: spacing.sm },
   empty: { color: colors.textMuted, marginBottom: spacing.md },
   goalCard: {
     backgroundColor: colors.surface, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border,
@@ -257,13 +257,13 @@ const styles = StyleSheet.create({
   goalTitle: { color: colors.textPrimary, fontWeight: '600', marginBottom: spacing.sm },
   progressTrack: { height: 8, backgroundColor: colors.surfaceAlt, borderRadius: radius.pill, overflow: 'hidden' },
   progressFill: { height: '100%', backgroundColor: colors.gold },
-  goalSub: { color: colors.textSecondary, fontSize: 12, marginTop: spacing.xs },
+  goalSub: { color: colors.textSecondary, fontSize: 14, marginTop: spacing.xs },
   importButton: {
     flexDirection: 'row', backgroundColor: colors.gold, paddingVertical: 14, borderRadius: radius.md,
     alignItems: 'center', justifyContent: 'center',
   },
   importButtonText: { color: colors.background, fontWeight: '700' },
-  note: { color: colors.textMuted, fontSize: 12, marginTop: spacing.sm },
+  note: { color: colors.textMuted, fontSize: 14, marginTop: spacing.sm },
   form: { backgroundColor: colors.surface, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, padding: spacing.md },
   typeRow: { flexDirection: 'row', marginBottom: spacing.sm },
   typeChip: {
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     alignItems: 'center', marginHorizontal: 2,
   },
   typeChipActive: { backgroundColor: colors.gold, borderColor: colors.gold },
-  typeChipText: { color: colors.textSecondary, fontSize: 12, textTransform: 'capitalize' },
+  typeChipText: { color: colors.textSecondary, fontSize: 14, textTransform: 'capitalize' },
   typeChipTextActive: { color: colors.background, fontWeight: '700' },
   input: {
     backgroundColor: colors.surfaceAlt, borderWidth: 1, borderColor: colors.border, borderRadius: radius.sm,

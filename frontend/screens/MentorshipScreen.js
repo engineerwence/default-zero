@@ -79,7 +79,7 @@ export default function MentorshipScreen() {
   if (match) {
     return (
       <View style={styles.container}>
-        <Ionicons name="people-circle-outline" size={48} color={colors.gold} style={{ marginBottom: spacing.md }} />
+        <Ionicons name="people-circle-outline" size={60} color={colors.gold} style={{ marginBottom: spacing.md }} />
         <Text style={styles.heading}>Matched in the {match.lane} lane</Text>
         <Text style={styles.body}>Mentor ID: {match.mentor_id}</Text>
         {/* TODO: chat / contact UI with the matched mentor, and show their actual name/profile */}
@@ -150,7 +150,7 @@ export default function MentorshipScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background, alignItems: 'center', justifyContent: 'center', padding: spacing.xl },
-  heading: { color: colors.textPrimary, fontSize: 18, fontWeight: '700', textAlign: 'center', marginBottom: spacing.sm },
+  heading: { color: colors.textPrimary, fontSize: 21, fontWeight: '700', textAlign: 'center', marginBottom: spacing.sm },
   body: { color: colors.textSecondary, textAlign: 'center', lineHeight: 20, marginBottom: spacing.xl },
   modeSwitch: { flexDirection: 'row', marginBottom: spacing.md, width: '100%' },
   modeChip: {
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.sm,
   },
   modeChipActive: { backgroundColor: colors.gold, borderColor: colors.gold },
-  modeChipText: { color: colors.textSecondary, fontWeight: '600', fontSize: 13 },
+  modeChipText: { color: colors.textSecondary, fontWeight: '600', fontSize: 15 },
   modeChipTextActive: { color: colors.background },
   containerRow: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', marginBottom: spacing.lg },
   containerChip: {
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     margin: 4,
   },
   containerChipActive: { backgroundColor: colors.gold, borderColor: colors.gold },
-  containerChipText: { color: colors.textSecondary, fontSize: 13 },
+  containerChipText: { color: colors.textSecondary, fontSize: 15 },
   containerChipTextActive: { color: colors.background, fontWeight: '700' },
   input: {
     width: '100%', backgroundColor: colors.surfaceAlt, borderWidth: 1, borderColor: colors.border, borderRadius: radius.sm,

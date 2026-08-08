@@ -46,6 +46,6 @@ const styles = StyleSheet.create({
   },
   iconWrap: { width: 40, height: 40, marginBottom: spacing.sm, justifyContent: 'center' },
   icon: { width: '100%', height: '100%' },
-  title: { color: colors.textPrimary, fontWeight: '600', fontSize: 14, marginBottom: 2 },
+  title: { color: colors.textPrimary, fontWeight: '600', fontSize: 16, marginBottom: 2 },
   score: { color: colors.gold, fontWeight: '700', fontSize: 20 },
 });

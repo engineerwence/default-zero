@@ -1,8 +1,40 @@
-import { useState, useRef } from 'react';
-import { View, Text, TextInput, Pressable, StyleSheet, FlatList, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import { useState, useRef, useEffect } from 'react';
+import { View, Text, TextInput, Pressable, StyleSheet, FlatList, KeyboardAvoidingView, Platform, Alert, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, radius } from '../theme/colors';
 import { API_URL } from '../lib/supabase';
+
+function SocratesAvatar({ thinking }) {
+  const blink = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    let active = true;
+    const blinkOnce = () => {
+      if (!active) return;
+      Animated.sequence([
+        Animated.timing(blink, { toValue: 0.12, duration: 100, useNativeDriver: true }),
+        Animated.timing(blink, { toValue: 1, duration: 130, useNativeDriver: true }),
+      ]).start(() => {
+        if (active) setTimeout(blinkOnce, 2200 + Math.random() * 1800);
+      });
+    };
+    const timer = setTimeout(blinkOnce, 1200);
+    return () => {
+      active = false;
+      clearTimeout(timer);
+    };
+  }, [blink]);
+
+  return (
+    <View style={[styles.avatar, thinking && styles.avatarThinking]}>
+      <Animated.View style={[styles.eye, styles.eyeLeft, { transform: [{ scaleY: blink }] }]} />
+      <Animated.View style={[styles.eye, styles.eyeRight, { transform: [{ scaleY: blink }] }]} />
+      <View style={styles.nose} />
+      <View style={styles.browLeft} />
+      <View style={styles.browRight} />
+    </View>
+  );
+}
 
 export default function SocratesChatScreen() {
   const [messages, setMessages] = useState([
@@ -29,6 +61,7 @@ export default function SocratesChatScreen() {
         body: JSON.stringify({ message: userMsg.text }),
       });
       const data = await res.json();
+      if (!res.ok) throw new Error(data.detail ?? 'Socrates is unavailable right now.');
       setMessages((prev) => [
         ...prev,
         {
@@ -63,6 +96,14 @@ export default function SocratesChatScreen() {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <View style={[styles.socratesPanel, sending && styles.socratesPanelThinking]}>
+        <SocratesAvatar thinking={sending} />
+        <View style={styles.socratesCopy}>
+          <Text style={styles.socratesName}>SOCRATES</Text>
+          <Text style={styles.socratesStatus}>{sending ? 'Thinking through your answer...' : 'Ask the question you are avoiding.'}</Text>
+        </View>
+        {sending && <View style={styles.thinkingDots}><Text style={styles.thinkingDotsText}>...</Text></View>}
+      </View>
       <FlatList
         ref={listRef}
         data={messages}
@@ -118,22 +159,44 @@ const styles = StyleSheet.create({
   bubbleAssistant: { backgroundColor: colors.surface, alignSelf: 'flex-start', borderWidth: 1, borderColor: colors.border },
   bubbleUser: { backgroundColor: colors.gold, alignSelf: 'flex-end' },
   bubbleSafety: { backgroundColor: colors.surfaceAlt, borderColor: colors.success, borderWidth: 1 },
-  bubbleText: { color: colors.textPrimary },
+  bubbleText: { color: colors.textPrimary, fontSize: 18, lineHeight: 27 },
   suggestionChip: {
     flexDirection: 'row', alignSelf: 'flex-start', alignItems: 'center', borderWidth: 1, borderColor: colors.gold,
-    borderRadius: radius.pill, paddingVertical: 6, paddingHorizontal: spacing.sm, marginBottom: spacing.sm,
+    borderRadius: radius.pill, paddingVertical: 9, paddingHorizontal: spacing.md, marginBottom: spacing.sm,
   },
-  suggestionText: { color: colors.gold, fontSize: 12, fontWeight: '600' },
-  acceptedNote: { color: colors.success, fontSize: 12, marginBottom: spacing.sm, alignSelf: 'flex-start' },
-  inputRow: { flexDirection: 'row', padding: spacing.md, borderTopWidth: 1, borderTopColor: colors.border },
+  suggestionText: { color: colors.gold, fontSize: 16, fontWeight: '600' },
+  acceptedNote: { color: colors.success, fontSize: 16, marginBottom: spacing.sm, alignSelf: 'flex-start' },
+  socratesPanel: {
+    flexDirection: 'row', alignItems: 'center', margin: spacing.md, padding: spacing.md,
+    backgroundColor: colors.surface, borderRadius: radius.lg, borderWidth: 1, borderColor: colors.border,
+  },
+  socratesPanelThinking: { backgroundColor: colors.surfaceAlt, borderColor: colors.goldDim },
+  avatar: {
+    width: 92, height: 92, borderRadius: 46, backgroundColor: colors.gold,
+    borderWidth: 3, borderColor: colors.goldBright, position: 'relative', overflow: 'hidden',
+  },
+  avatarThinking: { transform: [{ scale: 0.88 }] },
+  eye: { position: 'absolute', top: 28, width: 22, height: 28, borderRadius: 14, backgroundColor: colors.textPrimary },
+  eyeLeft: { left: 19 },
+  eyeRight: { right: 19 },
+  browLeft: { position: 'absolute', top: 20, left: 17, width: 26, height: 5, borderRadius: 2, backgroundColor: colors.background, transform: [{ rotate: '-10deg' }] },
+  browRight: { position: 'absolute', top: 20, right: 17, width: 26, height: 5, borderRadius: 2, backgroundColor: colors.background, transform: [{ rotate: '10deg' }] },
+  nose: { position: 'absolute', top: 50, left: 42, width: 9, height: 12, borderRadius: 5, backgroundColor: colors.goldDim },
+  socratesCopy: { flex: 1, marginLeft: spacing.md },
+  socratesName: { color: colors.gold, fontSize: 16, fontWeight: '700', letterSpacing: 2, marginBottom: 4 },
+  socratesStatus: { color: colors.textSecondary, fontSize: 17, lineHeight: 24 },
+  thinkingDots: { width: 46, height: 46, borderRadius: 23, backgroundColor: colors.gold, alignItems: 'center', justifyContent: 'center' },
+  thinkingDotsText: { color: colors.background, fontSize: 28, fontWeight: '700', marginTop: -10 },
+  inputRow: { flexDirection: 'row', padding: spacing.lg, borderTopWidth: 1, borderTopColor: colors.border },
   input: {
     flex: 1,
     backgroundColor: colors.surfaceAlt,
     borderRadius: radius.pill,
     paddingHorizontal: spacing.md,
     color: colors.textPrimary,
+    fontSize: 18,
     marginRight: spacing.sm,
   },
-  sendButton: { justifyContent: 'center', paddingHorizontal: spacing.md },
-  sendText: { color: colors.gold, fontWeight: '700' },
+  sendButton: { justifyContent: 'center', paddingHorizontal: spacing.lg },
+  sendText: { color: colors.gold, fontWeight: '700', fontSize: 18 },
 });

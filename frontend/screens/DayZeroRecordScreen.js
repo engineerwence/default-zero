@@ -87,11 +87,11 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background, alignItems: 'center', justifyContent: 'center', padding: spacing.lg },
   camera: { width: '100%', aspectRatio: 3 / 4, borderRadius: radius.lg, overflow: 'hidden', backgroundColor: colors.surface },
   instruction: { color: colors.textSecondary, textAlign: 'center', marginVertical: spacing.lg, lineHeight: 20 },
-  heading: { color: colors.textPrimary, fontSize: 20, fontWeight: '700', marginBottom: spacing.sm, textAlign: 'center' },
+  heading: { color: colors.textPrimary, fontSize: 24, fontWeight: '700', marginBottom: spacing.sm, textAlign: 'center' },
   body: { color: colors.textSecondary, textAlign: 'center', marginBottom: spacing.xl, lineHeight: 20 },
   recordButton: { backgroundColor: colors.gold, paddingVertical: 16, paddingHorizontal: spacing.xl, borderRadius: radius.pill },
   recordButtonActive: { backgroundColor: colors.danger },
   confirmBox: { alignItems: 'center', paddingHorizontal: spacing.lg },
   button: { backgroundColor: colors.gold, paddingVertical: 16, paddingHorizontal: spacing.xl, borderRadius: radius.md },
-  buttonText: { color: colors.background, fontWeight: '700', fontSize: 15 },
+  buttonText: { color: colors.background, fontWeight: '700', fontSize: 17 },
 });

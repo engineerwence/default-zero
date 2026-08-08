@@ -16,6 +16,14 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "updates": {
+      "url": "https://u.expo.dev/3ac9545f-40ea-466d-9cd9-da9a2ad33884",
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 0
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.defaultzero.app"

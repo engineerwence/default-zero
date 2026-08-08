@@ -1,6 +1,9 @@
 import { useState, useRef } from 'react';
 import { View, Text, StyleSheet, FlatList, Dimensions, Pressable, Image } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { colors, spacing, radius } from '../theme/colors';
+
+const ONBOARDING_COMPLETE_KEY = 'default-zero:onboarding-complete';
 
 const { width } = Dimensions.get('window');
 
@@ -26,12 +29,17 @@ export default function OnboardingScreen({ navigation }) {
   const [index, setIndex] = useState(0);
   const listRef = useRef(null);
 
+  const finishOnboarding = async () => {
+    await AsyncStorage.setItem(ONBOARDING_COMPLETE_KEY, 'true');
+    navigation.replace('DayZeroRecord');
+  };
+
   const next = () => {
     if (index < SLIDES.length - 1) {
       listRef.current?.scrollToIndex({ index: index + 1 });
       setIndex(index + 1);
     } else {
-      navigation.replace('DayZeroRecord');
+      finishOnboarding();
     }
   };
 
@@ -65,7 +73,7 @@ export default function OnboardingScreen({ navigation }) {
       </Pressable>
 
       {index < SLIDES.length - 1 && (
-        <Pressable onPress={() => navigation.replace('DayZeroRecord')}>
+        <Pressable onPress={finishOnboarding}>
           <Text style={styles.skip}>Skip</Text>
         </Pressable>
       )}
@@ -78,7 +86,7 @@ const styles = StyleSheet.create({
   slide: { alignItems: 'center', paddingHorizontal: spacing.xl },
   mark: { width: 96, height: 96, marginBottom: spacing.xl },
   title: { color: colors.textPrimary, fontSize: 24, fontWeight: '700', textAlign: 'center', marginBottom: spacing.md },
-  body: { color: colors.textSecondary, fontSize: 15, textAlign: 'center', lineHeight: 22 },
+  body: { color: colors.textSecondary, fontSize: 17, textAlign: 'center', lineHeight: 25 },
   dots: { flexDirection: 'row', justifyContent: 'center', marginTop: spacing.lg, marginBottom: spacing.xl },
   dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: colors.border, marginHorizontal: 4 },
   dotActive: { backgroundColor: colors.gold, width: 18 },
